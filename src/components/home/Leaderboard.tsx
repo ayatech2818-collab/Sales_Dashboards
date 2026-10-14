@@ -8,7 +8,7 @@ import {
   MdStar,
 } from "react-icons/md";
 import type { HomeData, Organizer } from "@/data/home";
-import { inr, inrShort } from "@/lib/format";
+import { inr, inrShort, shortName } from "@/lib/format";
 import { Scroller } from "@/lib/scroller";
 import { clamp, prefersReducedMotion } from "@/lib/utils";
 import { Avatar } from "./Avatar";
@@ -57,11 +57,6 @@ function cardStyle(rank: number, isMe: boolean): CardStyle {
   const medal = MEDALS[rank - 1];
   if (!isMe) return medal ?? PLAIN;
   return { card: MINE.card, ring: MINE.ring, rank: medal?.rank ?? MINE.rank };
-}
-
-function shortName(name: string): string {
-  const [first, second] = name.split(" ");
-  return second ? `${first} ${second[0]}.` : first;
 }
 
 function cardStride(el: HTMLElement): number {

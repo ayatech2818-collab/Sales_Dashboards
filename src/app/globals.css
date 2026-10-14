@@ -26,6 +26,28 @@
   --color-bronze: #8a5a00;
   --color-cocoa: #3a2a00;
 
+  /* SDO supervisor dashboard */
+  --color-paper: #f4f2ee;
+  --color-night: #22263a;
+  --color-body: #2f3447;
+  --color-label: #3a3f52;
+  --color-sub: #5d6275;
+  --color-dim: #6b7085;
+  --color-hint: #8a8fa0;
+  --color-line: #e8e5de;
+  --color-well: #efede8;
+  --color-field: #faf9f6;
+  --color-tab: #f3f2ef;
+  --color-good: #1f9d6b;
+  --color-good-ink: #137a52;
+  --color-good-soft: #e5f7ee;
+  --color-spring: #3ecf8e;
+  --color-sun: #f5b82e;
+  --color-sun-soft: #fff4d6;
+  --color-danger: #d14b4b;
+  --color-danger-soft: #fde8e6;
+  --shadow-card: 0 8px 24px rgba(30, 32, 50, 0.06);
+
   --animate-next-glow: next-glow 1.8s ease-in-out infinite;
   --animate-ms-pop: ms-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   --animate-star-pop: star-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
