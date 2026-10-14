@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-mukta), system-ui, sans-serif;
+  --font-display: var(--font-baloo), sans-serif;
+}
+
+@theme {
+  /* Width of the phone column the screen is laid out in. */
+  --container-phone: 412px;
+
+  --color-canvas: #e9e7e1;
+  --color-screen: #f7f5f0;
+  --color-ink: #1d2033;
+  --color-ink-soft: #3b4060;
+  --color-muted: #5e6275;
+  --color-subtle: #73778a;
+  --color-chip: #eef0f6;
+  --color-silver: #a3a8ba;
+  --color-mint: #4be3a6;
+  --color-leaf: #1fa971;
+  --color-forest: #0b7a52;
+  --color-gold: #f6be3b;
+  --color-gold-soft: #ffd96e;
+  --color-honey: #f2a51f;
+  --color-bronze: #8a5a00;
+  --color-cocoa: #3a2a00;
+
+  --animate-next-glow: next-glow 1.8s ease-in-out infinite;
+  --animate-ms-pop: ms-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-star-pop: star-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+  --animate-shine: shine 3.4s ease-in-out infinite;
+  --animate-gift-wiggle: gift-wiggle 5s ease-in-out 1.5s infinite;
+  --animate-dot-pulse: dot-pulse 2s ease-out infinite;
+  --animate-toast-in: toast-in 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
+  --animate-tip-in: tip-in 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility bg-gold-sheen {
+  background-image: linear-gradient(135deg, #ffd96e, #f2a51f);
+}
+
+@utility bg-profile-card {
+  background:
+    radial-gradient(180px 120px at 100% 0%, rgba(75, 227, 166, 0.18), rgba(75, 227, 166, 0) 70%),
+    #ffffff;
+}
+
+@utility bg-target-card {
+  background:
+    radial-gradient(240px 170px at 100% 0%, rgba(75, 227, 166, 0.22), rgba(75, 227, 166, 0) 70%),
+    radial-gradient(220px 150px at 0% 100%, rgba(246, 190, 59, 0.13), rgba(246, 190, 59, 0) 70%),
+    linear-gradient(160deg, #272c47, #1a1d2e);
+}
+
+@keyframes next-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(246, 190, 59, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(246, 190, 59, 0);
+  }
+}
+
+@keyframes ms-pop {
+  0% {
+    transform: scale(0.55);
+  }
+  55% {
+    transform: scale(1.28);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes star-pop {
+  0% {
+    transform: scale(0) rotate(-35deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.25) rotate(8deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+@keyframes shine {
+  0%,
+  62% {
+    transform: translateX(-160%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(300%) skewX(-18deg);
+  }
+}
+
+@keyframes gift-wiggle {
+  0%,
+  84%,
+  100% {
+    transform: rotate(0);
+  }
+  87% {
+    transform: rotate(-11deg);
+  }
+  90% {
+    transform: rotate(9deg);
+  }
+  93% {
+    transform: rotate(-6deg);
+  }
+  96% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes dot-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes tip-in {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+    scale: 0.95;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+/* Each piece supplies --x, --up, --down and --r inline. */
+@keyframes confetti {
+  0% {
+    transform: translate(0, 0) rotate(0);
+    opacity: 1;
+  }
+  35% {
+    transform: translate(calc(var(--x) * 0.7), var(--up)) rotate(calc(var(--r) * 0.4));
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x), var(--down)) rotate(var(--r));
+    opacity: 0;
+  }
+}
