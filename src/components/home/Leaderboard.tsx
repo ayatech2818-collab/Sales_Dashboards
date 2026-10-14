@@ -140,6 +140,8 @@ interface LeaderboardProps {
   /** Move the strip on its own while it isn't being touched or hovered. */
   autoSlide?: boolean;
   motion?: "step" | "glide";
+  /** Placement within the page layout. */
+  className?: string;
 }
 
 export function Leaderboard({
@@ -150,6 +152,7 @@ export function Leaderboard({
   earnings,
   autoSlide = true,
   motion = "step",
+  className = "",
 }: LeaderboardProps) {
   const stripRef = useRef<HTMLDivElement>(null);
 
@@ -192,7 +195,10 @@ export function Leaderboard({
       : `${inr(above.sales - earnings)} to reach #${myRank - 1}`;
 
   return (
-    <section className="mt-2 flex flex-col gap-2.5">
+    // Wider screens pull your own standing up beside the heading.
+    <section
+      className={`mt-2 flex flex-col gap-2.5 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] md:items-center md:gap-x-6 ${className}`}
+    >
       <div className="flex items-center gap-2.5">
         <span className="flex size-[38px] flex-none items-center justify-center rounded-xl bg-gold-sheen text-cocoa">
           <MdEmojiEvents size={22} />
@@ -207,9 +213,14 @@ export function Leaderboard({
         </div>
       </div>
 
+      {/*
+        Bleeds into the page's side padding, so it tracks that padding. On large
+        screens the page may stop short of the window, so the bleed fades out
+        rather than cutting cards off mid-air.
+      */}
       <div
         ref={stripRef}
-        className="no-scrollbar -mx-4 flex cursor-grab snap-x snap-mandatory scroll-px-4 gap-2.5 overflow-x-auto overflow-y-hidden px-4 pb-3.5 pt-1.5"
+        className="no-scrollbar -mx-4 flex cursor-grab snap-x snap-mandatory scroll-px-4 gap-2.5 overflow-x-auto overflow-y-hidden px-4 pb-3.5 pt-1.5 md:col-span-2 md:-mx-6 md:scroll-px-6 md:px-6 lg:-mx-8 lg:scroll-px-8 lg:px-8 lg:[mask-image:linear-gradient(90deg,transparent,#000_2rem,#000_calc(100%-2rem),transparent)]"
       >
         {ranked.slice(0, TOP_COUNT).map((p, i) => {
           const rank = i + 1;
@@ -269,7 +280,7 @@ export function Leaderboard({
         })}
       </div>
 
-      <div className="flex items-center gap-2.5 rounded-[18px] border-[1.5px] border-mint/60 bg-[linear-gradient(90deg,#E6F9F0,#FFFFFF_65%)] px-3 py-2.5 shadow-[0_8px_20px_-14px_rgba(29,32,51,.3)]">
+      <div className="flex items-center gap-2.5 rounded-[18px] border-[1.5px] border-mint/60 bg-[linear-gradient(90deg,#E6F9F0,#FFFFFF_65%)] px-3 py-2.5 shadow-[0_8px_20px_-14px_rgba(29,32,51,.3)] md:col-start-2 md:row-start-1">
         <span className="h-8 min-w-11 flex-none rounded-[11px] bg-ink px-2 text-center font-display text-base font-extrabold leading-8 text-mint">
           #{myRank}
         </span>

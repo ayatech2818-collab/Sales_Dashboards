@@ -26,7 +26,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${baloo.variable} ${mukta.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-canvas font-sans text-ink">{children}</body>
+      <body className="min-h-full bg-canvas font-sans text-ink md:bg-screen">
+        {children}
+      </body>
     </html>
   );
 }

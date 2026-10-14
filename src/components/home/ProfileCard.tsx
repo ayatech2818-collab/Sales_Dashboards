@@ -2,9 +2,17 @@ import { MdLocationOn, MdOutlineBadge } from "react-icons/md";
 import type { HomeData } from "@/data/home";
 import { Avatar } from "./Avatar";
 
-export function ProfileCard({ me }: { me: HomeData["me"] }) {
+interface ProfileCardProps {
+  me: HomeData["me"];
+  /** Placement within the page layout. */
+  className?: string;
+}
+
+export function ProfileCard({ me, className = "" }: ProfileCardProps) {
   return (
-    <header className="relative flex items-center gap-3.5 rounded-3xl bg-profile-card p-4 shadow-[0_1px_2px_rgba(29,32,51,.05),0_10px_28px_-14px_rgba(29,32,51,.2)]">
+    <header
+      className={`relative flex items-center gap-3.5 rounded-3xl bg-profile-card p-4 shadow-[0_1px_2px_rgba(29,32,51,.05),0_10px_28px_-14px_rgba(29,32,51,.2)] ${className}`}
+    >
       <div className="relative size-[66px] flex-none rounded-full bg-[linear-gradient(135deg,#4BE3A6,#F6BE3B)] p-[3px]">
         <Avatar
           name={me.name}

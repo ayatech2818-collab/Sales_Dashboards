@@ -35,6 +35,8 @@ interface TargetCardProps {
   milestones: Milestone[];
   /** Index of the first milestone not yet reached, or -1 once all are. */
   nextIndex: number;
+  /** Placement within the page layout. */
+  className?: string;
 }
 
 export function TargetCard({
@@ -45,6 +47,7 @@ export function TargetCard({
   shown,
   milestones,
   nextIndex,
+  className = "",
 }: TargetCardProps) {
   const [openTip, setOpenTip] = useState<number | null>(null);
   const tipTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -63,7 +66,10 @@ export function TargetCard({
   };
 
   return (
-    <section className="relative rounded-[28px] bg-target-card px-5 pb-[18px] pt-5 text-white shadow-[0_20px_40px_-20px_rgba(26,29,46,.65)]">
+    // When the layout stretches it to match its neighbour, the rows spread apart.
+    <section
+      className={`relative rounded-[28px] bg-target-card px-5 pb-[18px] pt-5 text-white shadow-[0_20px_40px_-20px_rgba(26,29,46,.65)] md:flex md:flex-col md:justify-between ${className}`}
+    >
       <div className="flex items-center justify-between gap-2">
         <h2 className="flex items-center gap-1.5 text-xs font-semibold uppercase leading-none tracking-[.08em] text-white/72">
           <MdTrackChanges size={17} className="flex-none text-mint" />

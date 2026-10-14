@@ -14,6 +14,8 @@ interface RewardCardProps {
   nextIndex: number;
   /** 0→1 entrance progress; counts the stars up and fills the bar. */
   intro: number;
+  /** Placement within the page layout. */
+  className?: string;
 }
 
 export function RewardCard({
@@ -24,6 +26,7 @@ export function RewardCard({
   milestones,
   nextIndex,
   intro,
+  className = "",
 }: RewardCardProps) {
   const next = nextIndex >= 0 ? milestones[nextIndex] : null;
   const grand = milestones[milestones.length - 1];
@@ -37,7 +40,9 @@ export function RewardCard({
     : 1;
 
   return (
-    <section className="flex items-stretch gap-3.5 rounded-[22px] border border-[#F4E1A8] bg-[linear-gradient(110deg,#FFFFFF_0%,#FFFFFF_34%,#FFF3D3_100%)] p-4 shadow-[0_1px_2px_rgba(29,32,51,.05),0_10px_26px_-16px_rgba(170,110,0,.35)] transition-[translate,box-shadow] duration-200 ease-[ease] hover:-translate-y-0.5 hover:shadow-[0_1px_2px_rgba(29,32,51,.05),0_16px_30px_-14px_rgba(170,110,0,.4)]">
+    <section
+      className={`flex items-stretch gap-3.5 rounded-[22px] border border-[#F4E1A8] bg-[linear-gradient(110deg,#FFFFFF_0%,#FFFFFF_34%,#FFF3D3_100%)] p-4 shadow-[0_1px_2px_rgba(29,32,51,.05),0_10px_26px_-16px_rgba(170,110,0,.35)] transition-[translate,box-shadow] duration-200 ease-[ease] hover:-translate-y-0.5 hover:shadow-[0_1px_2px_rgba(29,32,51,.05),0_16px_30px_-14px_rgba(170,110,0,.4)] ${className}`}
+    >
       <div className="flex min-w-24 flex-initial flex-col gap-1.5">
         <h2 className="text-[13px] font-semibold leading-[1.1] text-muted">
           Your stars

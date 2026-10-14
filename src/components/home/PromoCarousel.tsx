@@ -9,9 +9,15 @@ interface PromoCarouselProps {
   slides: Slide[];
   /** Advance on a timer, bouncing between the first and last slide. */
   autoSlide?: boolean;
+  /** Placement within the page layout. */
+  className?: string;
 }
 
-export function PromoCarousel({ slides, autoSlide = true }: PromoCarouselProps) {
+export function PromoCarousel({
+  slides,
+  autoSlide = true,
+  className = "",
+}: PromoCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<Scroller | null>(null);
   const direction = useRef(1);
@@ -67,19 +73,23 @@ export function PromoCarousel({ slides, autoSlide = true }: PromoCarouselProps) 
   };
 
   return (
-    <section aria-label="Announcements" className="flex flex-col gap-2">
+    <section
+      aria-label="Announcements"
+      className={`flex flex-col gap-2 ${className}`}
+    >
+      {/* On wider screens the slides grow to fill whatever height the layout gives them. */}
       <div
         ref={trackRef}
         onScroll={(e) => {
           const el = e.currentTarget;
           setActive(Math.round(el.scrollLeft / el.clientWidth));
         }}
-        className="no-scrollbar flex cursor-grab snap-x snap-mandatory overflow-x-auto overflow-y-hidden rounded-[22px] shadow-[0_12px_28px_-18px_rgba(29,32,51,.45)]"
+        className="no-scrollbar flex cursor-grab snap-x snap-mandatory overflow-x-auto overflow-y-hidden rounded-[22px] shadow-[0_12px_28px_-18px_rgba(29,32,51,.45)] md:flex-1"
       >
         {slides.map((slide) => (
           <div
             key={slide.title}
-            className="relative h-[152px] w-full flex-none snap-start overflow-hidden bg-[linear-gradient(135deg,#2A2F4A,#1D2033)]"
+            className="relative h-[152px] w-full flex-none snap-start overflow-hidden bg-[linear-gradient(135deg,#2A2F4A,#1D2033)] md:h-auto md:min-h-[152px]"
           >
             <span
               aria-hidden

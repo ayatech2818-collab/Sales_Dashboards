@@ -8,11 +8,13 @@ import { monotonePath, valueAt } from "@/lib/chart";
 import { inr, inrShort } from "@/lib/format";
 import { clamp } from "@/lib/utils";
 
-// Plot geometry in px. The width is measured; the design draws it at 332.
+// Plot geometry in px. The size is measured; the design draws it at 332 × 160.
 const DESIGN_WIDTH = 332;
+const DESIGN_HEIGHT = 160;
 const X_INSET = 6;
-const BASELINE_Y = 132;
-const PLOT_HEIGHT = 116;
+/** Room above the plot, and below the baseline for the day labels. */
+const TOP_INSET = 16;
+const AXIS_HEIGHT = 28;
 const TIP_WIDTH = 132;
 
 interface EarningsCardProps {
@@ -25,6 +27,8 @@ interface EarningsCardProps {
   shown: number;
   /** 0→1 entrance progress; grows last month's line in. */
   intro: number;
+  /** Placement within the page layout. */
+  className?: string;
 }
 
 export function EarningsCard({
@@ -34,16 +38,23 @@ export function EarningsCard({
   earnings,
   shown,
   intro,
+  className = "",
 }: EarningsCardProps) {
   const plotRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(DESIGN_WIDTH);
+  const [{ width, height }, setSize] = useState({
+    width: DESIGN_WIDTH,
+    height: DESIGN_HEIGHT,
+  });
   const [scrubDay, setScrubDay] = useState<number | null>(null);
 
   useLayoutEffect(() => {
     const el = plotRef.current;
     if (!el) return;
     const observer = new ResizeObserver(([entry]) =>
-      setWidth(entry.contentRect.width),
+      setSize({
+        width: entry.contentRect.width,
+        height: entry.contentRect.height,
+      }),
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -51,11 +62,13 @@ export function EarningsCard({
 
   const { days, today } = period;
   const xSpan = width - X_INSET * 2;
+  const baselineY = height - AXIS_HEIGHT;
+  const plotHeight = baselineY - TOP_INSET;
   // Leave headroom above the target line.
   const yMax = (target * 11) / 10;
   const xOf = (day: number) => X_INSET + (day / days) * xSpan;
   const yOf = (amount: number) =>
-    BASELINE_Y - (Math.min(amount, yMax) / yMax) * PLOT_HEIGHT;
+    baselineY - (Math.min(amount, yMax) / yMax) * plotHeight;
 
   // The current series was sampled at `sampled`; rescale it to the live figure.
   const sampled = chart.current[chart.current.length - 1][1];
@@ -67,7 +80,7 @@ export function EarningsCard({
   );
   const currentPath = monotonePath(currentPts);
   const [lastX, lastY] = currentPts[currentPts.length - 1];
-  const areaPath = `${currentPath} L${lastX.toFixed(1)} ${BASELINE_Y} L${currentPts[0][0].toFixed(1)} ${BASELINE_Y} Z`;
+  const areaPath = `${currentPath} L${lastX.toFixed(1)} ${baselineY} L${currentPts[0][0].toFixed(1)} ${baselineY} Z`;
 
   const xToday = xOf(today);
   const previousToday = valueAt(chart.previous, today);
@@ -92,7 +105,9 @@ export function EarningsCard({
   };
 
   return (
-    <section className="flex flex-col gap-3 rounded-[22px] bg-white p-4 shadow-[0_1px_2px_rgba(29,32,51,.05),0_10px_26px_-16px_rgba(29,32,51,.25)]">
+    <section
+      className={`flex flex-col gap-3 rounded-[22px] bg-white p-4 shadow-[0_1px_2px_rgba(29,32,51,.05),0_10px_26px_-16px_rgba(29,32,51,.25)] ${className}`}
+    >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <h2 className="font-display text-[19px] font-bold leading-[1.1]">
@@ -138,9 +153,14 @@ export function EarningsCard({
         onPointerMove={onScrub}
         onPointerDown={onScrub}
         onPointerLeave={() => setScrubDay(null)}
-        className="relative h-40 cursor-crosshair touch-pan-y"
+        className="relative h-40 cursor-crosshair touch-pan-y md:h-auto md:min-h-40 md:flex-1"
       >
-        <svg width={width} height={140} className="block overflow-visible">
+        {/* Out of flow, so the measured height never feeds back into the layout. */}
+        <svg
+          width={width}
+          height={height}
+          className="absolute left-0 top-0 overflow-visible"
+        >
           <line
             x1={0}
             x2={width}
@@ -151,8 +171,8 @@ export function EarningsCard({
           <line
             x1={0}
             x2={width}
-            y1={BASELINE_Y}
-            y2={BASELINE_Y}
+            y1={baselineY}
+            y2={baselineY}
             className="stroke-ink/14 stroke-1"
           />
           <line
@@ -167,7 +187,7 @@ export function EarningsCard({
             x1={xToday}
             x2={xToday}
             y1={10}
-            y2={BASELINE_Y}
+            y2={baselineY}
             strokeDasharray="3 3"
             className="stroke-ink/18 stroke-1"
           />
@@ -208,7 +228,7 @@ export function EarningsCard({
                 x1={scrubX}
                 x2={scrubX}
                 y1={10}
-                y2={BASELINE_Y}
+                y2={baselineY}
                 className="stroke-ink stroke-1"
               />
               <circle

@@ -122,6 +122,7 @@ export function MonthProgress({ data }: { data: HomeData }) {
         shown={shown}
         milestones={milestones}
         nextIndex={nextIndex}
+        className="md:[grid-area:target]"
       />
       <RewardCard
         stars={me.stars}
@@ -131,6 +132,7 @@ export function MonthProgress({ data }: { data: HomeData }) {
         milestones={milestones}
         nextIndex={nextIndex}
         intro={intro}
+        className="md:[grid-area:reward]"
       />
       <EarningsCard
         period={period}
@@ -139,6 +141,7 @@ export function MonthProgress({ data }: { data: HomeData }) {
         earnings={earnings}
         shown={shown}
         intro={intro}
+        className="md:[grid-area:earnings]"
       />
       {toast && <Toast key={`toast-${toast.id}`} {...toast} />}
       {burst && <Confetti key={`burst-${burst.id}`} pieces={burst.pieces} />}
