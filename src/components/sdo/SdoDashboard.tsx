@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { MdArrowBack, MdGroups, MdPerson } from "react-icons/md";
+import { PromoCarousel } from "@/components/home/PromoCarousel";
 import { sdoApi } from "@/data/sdo";
 import { prefersReducedMotion } from "@/lib/utils";
 import { EmptyState, ErrorState, LoadingState } from "./DataStates";
@@ -54,7 +55,7 @@ const CLEARED: Partial<ViewState> = {
 interface SdoDashboardProps {
   /** Force a loading, empty or error state; the data is live otherwise. */
   dataState?: DataState;
-  /** Let the Top 10 strip advance on its own. */
+  /** Let the announcement slides and the Top 10 strip advance on their own. */
   autoplay?: boolean;
   thresholds?: Thresholds;
 }
@@ -107,7 +108,10 @@ export function SdoDashboard({
     <div className="min-h-dvh bg-paper font-sans leading-[normal] text-ink">
       <main className="mx-auto flex max-w-[440px] flex-col gap-4 px-3.5 pb-12 pt-4 md:max-w-6xl md:px-6">
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-start gap-4">
-          <SdoProfileCard sdo={sdo} count={metrics.length} />
+          <div className="flex flex-col gap-4">
+            <SdoProfileCard sdo={sdo} count={metrics.length} />
+            <PromoCarousel slides={sdoApi.getSlides()} autoSlide={autoplay} />
+          </div>
           <FilterPanel
             view={view}
             metrics={metrics}

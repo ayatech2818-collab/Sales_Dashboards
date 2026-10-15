@@ -4,6 +4,8 @@
  * `SdoApi` shape.
  */
 
+import { homeData, type Slide } from "./home";
+
 /** Daily sales history starts here (day index 0). */
 export const HISTORY_START = new Date(2026, 8, 1);
 /** Day index of today (13 Oct 2026); the history ends here. */
@@ -43,6 +45,8 @@ export interface SdoProfile {
 export interface SdoApi {
   getSdoProfile(): SdoProfile;
   getAssignedSOs(sdoId: string): SalesOrganizer[];
+  /** Announcement slides, shared with the organizer home screen. */
+  getSlides(): Slide[];
 }
 
 const NAMES = [
@@ -168,6 +172,7 @@ function createMockApi(): SdoApi {
   return {
     getSdoProfile: () => sdo,
     getAssignedSOs: (sdoId) => all.filter((so) => so.sdoId === sdoId),
+    getSlides: () => homeData.slides,
   };
 }
 
