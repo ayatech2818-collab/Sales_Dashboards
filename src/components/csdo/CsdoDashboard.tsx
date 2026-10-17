@@ -250,33 +250,11 @@ export function CsdoDashboard({
     <div className="min-h-dvh bg-backdrop font-display leading-[normal] text-navy">
       <main className="mx-auto flex min-h-dvh max-w-140 flex-col gap-3.5 bg-linen px-3.5 pb-12 pt-4 md:max-w-6xl md:px-6">
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-start gap-3.5">
+          <CsdoProfileCard scope={scope} view={an.view} onType={setType} />
           <div className="flex flex-col gap-3.5">
-            <CsdoProfileCard scope={scope} view={an.view} onType={setType} />
             <PromoCarousel slides={csdoApi.getSlides()} autoSlide={autoplay} />
             <ScenarioSwitcher scenario={state.scenario} onScenario={setScenario} onTestAccess={testAccess} />
           </div>
-          <PeopleFilters
-            scope={scope}
-            an={an}
-            filters={f}
-            activeCount={activeCount}
-            onQuery={(q) => setFilters({ q })}
-            onOpenSdo={openSdo}
-            onOpenSo={openSo}
-            onType={setType}
-            onAllSdos={() => go({ sdoId: "", soId: "" })}
-            onAllSos={() => go({ soId: "" })}
-            onPeriod={(period) => {
-              setFilters({ period });
-              load();
-            }}
-            onDates={(patch) => {
-              setFilters(patch);
-              load();
-            }}
-            onStatus={(status) => setFilters({ status })}
-            onClear={clearFilters}
-          />
         </div>
 
         <ViewHeader
@@ -341,6 +319,29 @@ export function CsdoDashboard({
               {an.range.to > an.range.from && an.totals.n > 0 && <SalesTrend an={an} />}
               {an.so && <RecentEnrolments so={an.so} range={an.range} />}
             </div>
+
+            <PeopleFilters
+              scope={scope}
+              an={an}
+              filters={f}
+              activeCount={activeCount}
+              onQuery={(q) => setFilters({ q })}
+              onOpenSdo={openSdo}
+              onOpenSo={openSo}
+              onType={setType}
+              onAllSdos={() => go({ sdoId: "", soId: "" })}
+              onAllSos={() => go({ soId: "" })}
+              onPeriod={(period) => {
+                setFilters({ period });
+                load();
+              }}
+              onDates={(patch) => {
+                setFilters(patch);
+                load();
+              }}
+              onStatus={(status) => setFilters({ status })}
+              onClear={clearFilters}
+            />
 
             <AssociateSections
               scope={scope}
