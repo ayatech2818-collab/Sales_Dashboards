@@ -4,6 +4,7 @@
  * `SdoApi` shape.
  */
 
+import { seededRandom } from "@/lib/random";
 import { homeData, type Slide } from "./home";
 
 /** Daily sales history starts here (day index 0). */
@@ -96,17 +97,6 @@ const SKILLS = [
   1.34, 1.26, 1.19, 1.13, 1.08, 1.04, 1.01, 0.99, 0.97, 0.95, 0.93, 0.91, 0.89,
   0.86, 0.83, 0.8, 0.77, 0.73, 0.69, 0.65, 0.6, 0.55, 0.5, 0.44,
 ];
-
-/** Seeded PRNG so the mock team is identical on every load. */
-function seededRandom(seed: number): () => number {
-  let s = seed;
-  return () => {
-    s = (s + 0x6d2b79f5) | 0;
-    let t = Math.imul(s ^ (s >>> 15), 1 | s);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 function createMockApi(): SdoApi {
   const random = seededRandom(20261013);

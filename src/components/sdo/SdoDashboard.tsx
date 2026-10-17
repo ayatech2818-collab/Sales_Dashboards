@@ -106,7 +106,7 @@ export function SdoDashboard({
 
   return (
     <div className="min-h-dvh bg-paper font-sans leading-[normal] text-ink">
-      <main className="mx-auto flex max-w-[440px] flex-col gap-4 px-3.5 pb-12 pt-4 md:max-w-6xl md:px-6">
+      <main className="mx-auto flex max-w-110 flex-col gap-4 px-3.5 pb-12 pt-4 md:max-w-6xl md:px-6">
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-start gap-4">
           <div className="flex flex-col gap-4">
             <SdoProfileCard sdo={sdo} count={metrics.length} />
@@ -132,7 +132,7 @@ export function SdoDashboard({
           <>
             <div className="flex flex-wrap items-center gap-2.5">
               <div
-                className={`flex items-center gap-1.5 rounded-full py-[5px] pl-2 pr-3 text-[12px] font-bold tracking-[.08em] text-white ${
+                className={`flex items-center gap-1.5 rounded-full py-1.25 pl-2 pr-3 text-[12px] font-bold tracking-[.08em] text-white ${
                   selected ? "bg-good" : "bg-night"
                 }`}
               >
@@ -148,7 +148,7 @@ export function SdoDashboard({
                 <button
                   type="button"
                   onClick={() => update({ person: "all" })}
-                  className="ml-auto flex cursor-pointer items-center gap-1 rounded-full border-[1.5px] border-[#e2dfd8] bg-white px-3 py-[5px] text-[14px] font-bold text-night"
+                  className="ml-auto flex cursor-pointer items-center gap-1 rounded-full border-[1.5px] border-[#e2dfd8] bg-white px-3 py-1.25 text-[14px] font-bold text-night"
                 >
                   <MdArrowBack size={18} />
                   Back to team
