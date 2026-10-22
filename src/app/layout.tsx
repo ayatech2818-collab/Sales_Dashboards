@@ -15,9 +15,9 @@ const mukta = Mukta({
 });
 
 export const metadata: Metadata = {
-  title: "Sales Organizer · Home",
+  title: "Ayadi Sales Dashboards",
   description:
-    "Monthly target, rewards, earnings and leaderboard for sales organizers.",
+    "Integrated sales performance hierarchy dashboards from Sales Manager (SM), Chief SDO (CSDO), and SDO teams down to frontline Sales Organizers.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

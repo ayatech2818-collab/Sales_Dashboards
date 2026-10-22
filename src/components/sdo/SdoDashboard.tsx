@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { MdArrowBack, MdGroups, MdPerson } from "react-icons/md";
 import { PromoCarousel } from "@/components/home/PromoCarousel";
+import { RoleSwitcher } from "@/components/common/RoleSwitcher";
 import { sdoApi } from "@/data/sdo";
 import { prefersReducedMotion } from "@/lib/utils";
 import { EmptyState, ErrorState, LoadingState } from "./DataStates";
@@ -111,6 +112,7 @@ export function SdoDashboard({
           <div className="flex flex-col gap-4">
             <SdoProfileCard sdo={sdo} count={metrics.length} />
             <PromoCarousel slides={sdoApi.getSlides()} autoSlide={autoplay} />
+            <RoleSwitcher />
           </div>
           <FilterPanel
             view={view}

@@ -7,6 +7,7 @@ import { SdoProfile, SoProfile, type ReassignDraft } from "./AssociateProfile";
 import { AssociateSections } from "./AssociateSections";
 import { CsdoProfileCard } from "./CsdoProfileCard";
 import { PromoCarousel } from "@/components/home/PromoCarousel";
+import { RoleSwitcher } from "@/components/common/RoleSwitcher";
 import { LoadingState, ProblemNotice, type Problem } from "./DataStates";
 import { Insights } from "./Insights";
 import { KpiGrid } from "./KpiGrid";
@@ -253,6 +254,7 @@ export function CsdoDashboard({
           <CsdoProfileCard scope={scope} view={an.view} onType={setType} />
           <div className="flex flex-col gap-3.5">
             <PromoCarousel slides={csdoApi.getSlides()} autoSlide={autoplay} />
+            <RoleSwitcher />
             <ScenarioSwitcher scenario={state.scenario} onScenario={setScenario} onTestAccess={testAccess} />
           </div>
         </div>
