@@ -8,9 +8,15 @@ interface SmProfileCardProps {
   scope: SmScope;
   view: ViewKind;
   onType: (type: TypeFilter) => void;
+  className?: string;
 }
 
-export function SmProfileCard({ scope, view, onType }: SmProfileCardProps) {
+export function SmProfileCard({
+  scope,
+  view,
+  onType,
+  className = "",
+}: SmProfileCardProps) {
   const { sm } = scope;
 
   const directCount = scope.sos.filter((p) => scope.rel[p.id]?.type === "csdo-direct").length;
@@ -64,7 +70,7 @@ export function SmProfileCard({ scope, view, onType }: SmProfileCardProps) {
   ];
 
   return (
-    <section className={`relative flex flex-col gap-3.5 overflow-hidden rounded-3xl p-4.5 ${PANEL}`}>
+    <section className={`relative flex h-full flex-col justify-between gap-3.5 overflow-hidden rounded-3xl p-4.5 ${PANEL} ${className}`}>
       {/* Decorative gradient glow */}
       <div className="pointer-events-none absolute -right-10 -top-12 size-52 rounded-full bg-[radial-gradient(circle,#e0f2fe_0%,rgba(224,242,254,0)_70%)]" />
 

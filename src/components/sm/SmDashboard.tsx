@@ -15,7 +15,7 @@ import { AssociateSections } from "./AssociateSections";
 import { CsdoComparisonMatrix } from "./CsdoComparisonMatrix";
 import { LoadingState, ProblemNotice, type Problem } from "./DataStates";
 import { Insights } from "./Insights";
-import { KpiGrid } from "./KpiGrid";
+import { CoachingCard, KpiGrid } from "./KpiGrid";
 import { Leaderboards } from "./Leaderboards";
 import {
   DEFAULT_FILTERS,
@@ -271,7 +271,7 @@ export function SmDashboard({
     <div className="min-h-dvh bg-backdrop font-display leading-[normal] text-navy">
       <main className="mx-auto flex min-h-dvh max-w-140 flex-col gap-3.5 bg-linen px-3.5 pb-12 pt-4 md:max-w-6xl md:px-6">
         {/* Top Executive Header */}
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-start gap-3.5">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-stretch gap-3.5">
           <SmProfileCard scope={scope} view={an.view} onType={setType} />
           <div className="flex flex-col gap-3.5">
             <PromoCarousel slides={smApi.getSlides()} autoSlide={autoplay} />
@@ -334,8 +334,11 @@ export function SmDashboard({
             {an.view === "csdo" && an.csdo && <CsdoProfile scope={scope} csdo={an.csdo} />}
 
             {/* Target Hero & Macro KPI Grid */}
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-start gap-3.5">
-              <TargetHero an={an} period={f.period} />
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-stretch gap-3.5">
+              <div className="flex flex-col gap-3.5">
+                <TargetHero an={an} period={f.period} className="flex-1" />
+                {an.visitsDue > 0 && an.view !== "so" && <CoachingCard an={an} />}
+              </div>
               <KpiGrid scope={scope} an={an} />
             </div>
 
@@ -348,7 +351,7 @@ export function SmDashboard({
             )}
 
             {/* Performance Health & Trajectory */}
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-start gap-3.5">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-stretch gap-3.5">
               {!an.so && (
                 <StatusBreakdown
                   an={an}

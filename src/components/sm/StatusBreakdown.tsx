@@ -28,16 +28,23 @@ interface StatusBreakdownProps {
   status: StatusFilter;
   onStatus: (status: StatusFilter) => void;
   onOpenSo: (id: string) => void;
+  className?: string;
 }
 
-export function StatusBreakdown({ an, status, onStatus, onOpenSo }: StatusBreakdownProps) {
+export function StatusBreakdown({
+  an,
+  status,
+  onStatus,
+  onOpenSo,
+  className = "",
+}: StatusBreakdownProps) {
   const { view, range, totals: A, baseTotals: B, inViewSos } = an;
   const hasTarget = A.target > 0;
   const paceAt = `${Math.min(range.elapsed, 1) * 100}%`;
   const bars = inViewSos.slice().sort(byKey("ach"));
 
   return (
-    <section className={`flex flex-col gap-3 rounded-[22px] p-4 ${PANEL}`}>
+    <section className={`flex h-full flex-col justify-between gap-3 rounded-[22px] p-4 ${PANEL} ${className}`}>
       <CardTitle
         title={TITLE[view]}
         sub={`${range.label} · ${plural(B.n, "sales organizer")}${

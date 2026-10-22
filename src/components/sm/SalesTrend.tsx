@@ -1,14 +1,21 @@
+import { TODAY_DAY } from "@/data/sm";
 import { dayLabel } from "@/lib/calendar";
-import { inr, inrShort } from "@/lib/format";
+import { inr, inrShort, percent } from "@/lib/format";
 import type { SmAnalysis } from "./model";
 import { CardTitle, PANEL } from "./parts";
 
 const W = 480;
-const H = 170;
+const H = 180;
 const PAD_TOP = 14;
 const PAD_BOTTOM = 6;
 
-export function SalesTrend({ an }: { an: SmAnalysis }) {
+export function SalesTrend({
+  an,
+  className = "",
+}: {
+  an: SmAnalysis;
+  className?: string;
+}) {
   const { range, totals: A } = an;
   const span = range.to - range.from + 1;
 
@@ -28,8 +35,17 @@ export function SalesTrend({ an }: { an: SmAnalysis }) {
   const todayAt = x(last) / W;
   const gap = A.sales - A.expected;
 
+  // Executive pace projection metrics
+  const daysInPeriod = range.to - range.from + 1;
+  const elapsedDays = Math.max(Math.min(TODAY_DAY - range.from + 1, daysInPeriod), 1);
+  const remainingDays = Math.max(range.to - TODAY_DAY, 0);
+  const dailyRate = Math.round(A.sales / elapsedDays);
+  const requiredRate =
+    remainingDays > 0 ? Math.round(Math.max(A.target - A.sales, 0) / remainingDays) : 0;
+  const projected = Math.round(dailyRate * daysInPeriod);
+
   return (
-    <section className={`flex flex-col gap-3 rounded-[22px] p-4 ${PANEL}`}>
+    <section className={`flex h-full flex-col justify-between gap-3 rounded-[22px] p-4 ${PANEL} ${className}`}>
       <div className="flex items-start justify-between gap-2">
         <CardTitle title="State sales trajectory" sub={`${range.label} · cumulative revenue vs pace due`} />
         <span
@@ -67,7 +83,7 @@ export function SalesTrend({ an }: { an: SmAnalysis }) {
         </span>
         <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full overflow-visible">
           <line x1="0" x2={W} y1={targetY} y2={targetY} stroke="#E0A526" strokeWidth="1.5" strokeDasharray="6 6" />
-          <line x1="0" x2={W} y1="164" y2="164" stroke="#ECE9E2" strokeWidth="1" />
+          <line x1="0" x2={W} y1="174" y2="174" stroke="#ECE9E2" strokeWidth="1" />
           <path
             d={`M0 ${y(0).toFixed(1)} L${W} ${targetY.toFixed(1)}`}
             fill="none"
@@ -81,7 +97,7 @@ export function SalesTrend({ an }: { an: SmAnalysis }) {
             x1={x(last)}
             x2={x(last)}
             y1="0"
-            y2="164"
+            y2="174"
             stroke="#C9C6BE"
             strokeWidth="1"
             strokeDasharray="3 4"
@@ -102,6 +118,32 @@ export function SalesTrend({ an }: { an: SmAnalysis }) {
           </span>
         )}
         <span>{dayLabel(range.to)}</span>
+      </div>
+
+      {/* Executive Trajectory & Forecast Metrics */}
+      <div className="grid grid-cols-3 gap-2 rounded-xl border border-[#e2e8f0] bg-[#f8fafc] p-2.5">
+        <div className="flex flex-col leading-tight">
+          <span className="text-[11px] font-semibold text-pewter">Daily Pace</span>
+          <span className="text-[13.5px] font-extrabold text-navy">
+            {inrShort(dailyRate)}/day
+          </span>
+        </div>
+        <div className="flex flex-col leading-tight border-x border-[#e2e8f0] px-2">
+          <span className="text-[11px] font-semibold text-pewter">Required Rate</span>
+          <span className="text-[13.5px] font-extrabold text-[#0284c7]">
+            {remainingDays > 0 ? `${inrShort(requiredRate)}/day` : "Closed"}
+          </span>
+        </div>
+        <div className="flex flex-col leading-tight pl-1">
+          <span className="text-[11px] font-semibold text-pewter">Projected Close</span>
+          <span
+            className={`text-[13.5px] font-extrabold ${
+              projected >= A.target ? "text-pine" : "text-brick"
+            }`}
+          >
+            {inrShort(projected)} ({percent(projected / Math.max(A.target, 1))})
+          </span>
+        </div>
       </div>
     </section>
   );

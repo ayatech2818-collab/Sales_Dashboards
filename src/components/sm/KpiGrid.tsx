@@ -51,7 +51,15 @@ function sparkline(daily: number[]): { line: string; area: string } | null {
   return { line, area: `${line} L120 30 L0 30 Z` };
 }
 
-export function KpiGrid({ scope, an }: { scope: SmScope; an: SmAnalysis }) {
+export function KpiGrid({
+  scope,
+  an,
+  className = "",
+}: {
+  scope: SmScope;
+  an: SmAnalysis;
+  className?: string;
+}) {
   const { view, range, totals: A, so, csdo, inViewSos } = an;
   const tag = VIEW_TAG[view];
   const hasTarget = A.target > 0;
@@ -67,7 +75,7 @@ export function KpiGrid({ scope, an }: { scope: SmScope; an: SmAnalysis }) {
   const csdosRisk = an.csdos.filter((c) => c.status === "risk" || c.status === "needs").length;
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className={`grid grid-cols-2 gap-3 ${className}`}>
       {/* 1. Total Sales with Sparkline */}
       <Kpi label="Total sales" tag={tag}>
         <span className={VALUE}>{inrShort(A.sales)}</span>
@@ -264,43 +272,53 @@ export function KpiGrid({ scope, an }: { scope: SmScope; an: SmAnalysis }) {
           </Kpi>
         </>
       )}
+    </div>
+  );
+}
 
-      {/* 6. Field Coaching Compliance Wide Banner */}
-      {an.visitsDue > 0 && view !== "so" && (
-        <Kpi
-          label="Field coaching compliance"
-          tag="STATE COMPLIANCE"
-          tagClass="text-plum"
-          gap="gap-2"
-          wide
-        >
-          <div className="flex items-baseline justify-between gap-2">
-            <div className="flex items-baseline gap-1.5">
-              <span className={VALUE}>{an.visitsDone}</span>
-              <span className="text-[14px] font-semibold text-pewter">
-                of {an.visitsDue} scheduled visits completed
-              </span>
-            </div>
-            <span className="text-[13px] font-extrabold text-plum">
-              {an.visitsDue ? percent(an.visitsDone / an.visitsDue) : "0%"}
-            </span>
-          </div>
+export function CoachingCard({ an }: { an: SmAnalysis }) {
+  if (an.visitsDue <= 0 || an.view === "so") return null;
 
-          <div className="h-2.5 rounded-full bg-well">
-            <div
-              className="h-full rounded-full bg-plum"
-              style={{
-                width: `${an.visitsDue ? Math.min(an.visitsDone / an.visitsDue, 1) * 100 : 0}%`,
-              }}
-            />
-          </div>
+  return (
+    <div
+      className={`flex flex-col justify-between gap-2.5 rounded-[22px] p-4 ${PANEL}`}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-[13px] font-semibold text-steel">
+          Field coaching compliance
+        </span>
+        <span className="rounded-full bg-plum-soft px-2.5 py-0.75 text-[10.5px] font-bold tracking-wider text-plum">
+          STATE COMPLIANCE
+        </span>
+      </div>
 
-          <span className={NOTE}>
-            Mandated supervisory coaching: 3 field visits per week per SDO. Tracks direct mentoring
-            of frontline sales organizers.
+      <div className="flex items-baseline justify-between gap-2">
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-[26px] font-extrabold leading-[1.1] text-navy">
+            {an.visitsDone}
           </span>
-        </Kpi>
-      )}
+          <span className="text-[13.5px] font-semibold text-pewter">
+            of {an.visitsDue} scheduled visits completed
+          </span>
+        </div>
+        <span className="text-[13.5px] font-extrabold text-plum">
+          {an.visitsDue ? percent(an.visitsDone / an.visitsDue) : "0%"}
+        </span>
+      </div>
+
+      <div className="h-2 rounded-full bg-well">
+        <div
+          className="h-full rounded-full bg-plum transition-all"
+          style={{
+            width: `${an.visitsDue ? Math.min(an.visitsDone / an.visitsDue, 1) * 100 : 0}%`,
+          }}
+        />
+      </div>
+
+      <span className="text-[12px] text-pewter leading-snug">
+        Mandated supervisory coaching: 3 field visits per week per SDO. Tracks direct mentoring
+        of frontline sales organizers.
+      </span>
     </div>
   );
 }

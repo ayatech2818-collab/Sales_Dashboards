@@ -18,6 +18,7 @@ import {
 import { Avatar, CardTitle, Eyebrow, PANEL, Star, Tint, chipClass, segmentClass } from "./parts";
 
 const PAGE = 5;
+const SDO_PAGE = 3;
 
 const TAGS = {
   csdos: { label: "CSDO REGIONS", bg: "#F0FDF4", ink: "#15803D" },
@@ -278,19 +279,9 @@ export function AssociateSections({
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-1 text-[12px] text-steel">
-          <div className="flex items-center gap-1.5">
-            <Tint bg={S.bg} ink={S.ink} className="px-2 py-0.5 text-[11px]">
-              {S.label}
-            </Tint>
-            <span>
-              <b>{c.sdos.length}</b> SDOs · <b>{c.n}</b> SOs ({c.directSos.length} direct)
-            </span>
-          </div>
-          <div className="flex items-center gap-1 font-bold text-navy">
-            <Star size={13} />
-            {c.rating.toFixed(1)}
-          </div>
+        <div className="flex items-center justify-between text-[12px] text-plum font-semibold">
+          <span>{c.visits} of {c.visitsDue} field visits conducted</span>
+          <span className="text-steel font-normal">Pace: {percent(c.pace)}</span>
         </div>
       </button>
     );
@@ -313,7 +304,7 @@ export function AssociateSections({
   const shownSos = isExpandedAll ? filteredSos : filteredSos.slice(0, PAGE);
 
   const isExpandedSdos = !!expanded["SDOS"];
-  const shownSdos = isExpandedSdos ? filteredSdos : filteredSdos.slice(0, PAGE);
+  const shownSdos = isExpandedSdos ? filteredSdos : filteredSdos.slice(0, SDO_PAGE);
 
   return (
     <div className="flex flex-col gap-3.5">
@@ -399,9 +390,9 @@ export function AssociateSections({
         </section>
       ) : (
         // Grouped by CSDO Regions
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-start gap-3.5">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-stretch gap-3.5">
           {/* CSDO Regional Overview Section */}
-          <section className={`flex flex-col gap-3 rounded-[22px] p-4 ${PANEL}`}>
+          <section className={`flex h-full flex-col justify-between gap-3 rounded-[22px] p-4 ${PANEL}`}>
             <div className="flex items-start justify-between gap-2">
               <CardTitle
                 title="CSDO Regional Divisions"
@@ -423,10 +414,20 @@ export function AssociateSections({
                 onClear={onClear}
               />
             )}
+
+            <div className="mt-auto flex items-center justify-between gap-2 rounded-xl border border-[#e2e8f0] bg-[#f8fafc] px-3.5 py-2.5 text-[12px]">
+              <div className="flex items-center gap-1.5 text-navy font-bold">
+                <LuMapPin size={13} className="text-[#0284c7]" />
+                <span>State Zone Footprint</span>
+              </div>
+              <span className="text-pewter font-medium">
+                {filteredCsdos.length} CSDOs · 6 SDO Teams · 29 SOs
+              </span>
+            </div>
           </section>
 
           {/* SDO Field Teams Section */}
-          <section className={`flex flex-col gap-3 rounded-[22px] p-4 ${PANEL}`}>
+          <section className={`flex h-full flex-col justify-between gap-3 rounded-[22px] p-4 ${PANEL}`}>
             <div className="flex items-start justify-between gap-2">
               <CardTitle
                 title="SDO Field Teams"
@@ -449,13 +450,13 @@ export function AssociateSections({
               />
             )}
 
-            {filteredSdos.length > PAGE && (
+            {filteredSdos.length > SDO_PAGE && (
               <button
                 type="button"
                 onClick={() => onExpand("SDOS")}
                 className="h-9.5 cursor-pointer self-center rounded-full border border-edge bg-white px-4.5 text-[13px] font-bold text-navy transition hover:bg-wash"
               >
-                {isExpandedSdos ? "Show fewer" : `Show ${filteredSdos.length - PAGE} more`}
+                {isExpandedSdos ? "Show fewer" : `Show ${filteredSdos.length - SDO_PAGE} more`}
               </button>
             )}
           </section>

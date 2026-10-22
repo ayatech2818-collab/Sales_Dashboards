@@ -32,7 +32,7 @@ export function CsdoComparisonMatrix({ an, onOpenCsdo }: CsdoComparisonMatrixPro
           return (
             <div
               key={c.id}
-              className="flex flex-col gap-3 rounded-[20px] border p-3.5 transition-all hover:border-[#cbd5e1] hover:shadow-sm"
+              className="flex h-full flex-col justify-between gap-3 rounded-[20px] border p-3.5 transition-all hover:border-[#cbd5e1] hover:shadow-sm"
               style={{
                 background: i === 0 ? "linear-gradient(180deg,#FFFBEB 0%,#FFFFFF 65%)" : "#FFFFFF",
                 borderColor: i === 0 ? "#FDE68A" : "#E2E8F0",

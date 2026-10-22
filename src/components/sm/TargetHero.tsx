@@ -27,9 +27,11 @@ const NEEDS: Record<ViewKind, string> = {
 export function TargetHero({
   an,
   period,
+  className = "",
 }: {
   an: SmAnalysis;
   period: PeriodKey;
+  className?: string;
 }) {
   const { view, range, totals: A } = an;
   const hasTarget = A.target > 0;
@@ -65,7 +67,9 @@ export function TargetHero({
           : "Closed";
 
   return (
-    <section className="relative flex flex-col gap-4 overflow-hidden rounded-[26px] bg-[linear-gradient(160deg,#0f172a_0%,#1e293b_100%)] p-5 text-white shadow-[0_14px_30px_rgba(15,23,42,.32)]">
+    <section
+      className={`relative flex flex-col justify-between gap-4 overflow-hidden rounded-[26px] bg-[linear-gradient(160deg,#0f172a_0%,#1e293b_100%)] p-5 text-white shadow-[0_14px_30px_rgba(15,23,42,.32)] ${className}`}
+    >
       {/* Background flare */}
       <div className="pointer-events-none absolute -right-16 -top-16 size-48 rounded-full bg-sky-500/10 blur-2xl" />
 
